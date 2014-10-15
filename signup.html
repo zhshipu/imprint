@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>印记</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -33,7 +33,7 @@
 </head>
 
 <body>
-<div class="container" id="login-page">
+<div class="container" id="signup-page">
 	<div class="row clearfix" id="page-loading">
 		<div class="col-md-12 column">
 			<p class="text-center text-muted">
@@ -47,14 +47,17 @@
 	</div>
 	<div class="row clearfix">
 		<div class="col-md-12 column">
-			<form role="form" method="post" id="login">
+			<form role="form" id="signup">
 				<div class="form-group">
-					 <label for="username">Username</label><input type="text" class="form-control" id="username" />
+					 <label for="username">用户名</label><input type="text" class="form-control" id="username">
 				</div>
 				<div class="form-group">
-					 <label for="password">Password</label><input type="password" class="form-control" id="password" />
+					 <label for="password">密码</label><input type="password" class="form-control" id="password">
 				</div>
-				<button type="submit" class="btn btn-default" id='submit'>Submit</button>
+				<div class="form-group">
+					 <label for="name">昵称</label><input type="text" class="form-control" id="name">
+				</div>
+				<button id="submit" type="submit" class="btn btn-default">Submit</button>
 			</form>
 		</div>
 	</div>
