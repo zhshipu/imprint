@@ -43,7 +43,9 @@ imprint.login.ready = function(){
 		$.ajax({
 			type: 'GET',
 			url: base_path+'/login.do?'+'account='+usernameObj.val()+'&passwd='+passwordObj.val(),
-			success: sCback
+			beforeSend:function(){var $btn = $(this).button('loading');},
+			success: sCback,
+			complete: function(){$btn.button('reset');}
 		});
 	})
 }
@@ -54,6 +56,11 @@ imprint.signup.ready = function(){
 	loginStatus('index.html');
 	$('form#signup #submit').click(function(e){
 		e.preventDefault();
+		var formRt = imprint.signup.formCk();
+		if (formRt == false) 
+		{
+			return;
+		};						//表单检查出错则停止执行
 		var formObj = $('form#signup');
 		var usernameObj = formObj.find('input#username');
 		var passwordObj = formObj.find('input#password');
@@ -63,17 +70,41 @@ imprint.signup.ready = function(){
 			if (data.result_code == 1) {
 				window.location.href = base_path+'/index.html';
 			}else{
-				addAlter('Login failed!');
+				addAlter('Signup failed!');
 			};
 		}
 		$.ajax({
 			type: 'GET',
 			url: base_path+'/register.do?'+'account='+usernameObj.val()+'&passwd='+passwordObj.val()+'&name='+nameObj.val(),
-			beforeSend: beforeCback,
-			complete: completeCback,
-			success: sCback
+			success: sCback,
+			beforeSend:function(){var $btn = $(this).button('loading');},
+			complete: function(){$btn.button('reset');}
 		});
 	})
+}
+
+imprint.signup.formCk = function(){
+	//去除input错误
+	$('.form-group').removeClass('has-error');
+	var formObj = $('form#signup');
+	var usernameObj = formObj.find('input#username');
+	var passwordObj = formObj.find('input#password');
+	var nameObj = formObj.find('input#name');
+	if (usernameObj.val().length < 4) {
+		addAlter('用户名长度不能小于 4 个字符');
+		usernameObj.parent().addClass('has-error');
+		return false;
+	};
+	if (passwordObj.val().length < 6) {
+		addAlter('密码长度不能小于 6 个字符');
+		passwordObj.parent().addClass('has-error');
+		return false;
+	};
+	if (nameObj.val().length < 2) {
+		addAlter('昵称长度不能小于 2 个字符');
+		nameObj.parent().addClass('has-error');
+		return false;
+	};
 }
 
 $(document).ready(function(){
@@ -87,7 +118,9 @@ $(document).ready(function(){
 
 //添加警告框
 function addAlter(msg){
-	var alertObj = $('<div class="alert alert-success" role="alert"></div>');
+	//清除之前的alert
+	$('div.alert').remove();
+	var alertObj = $('<div class="alert alert-warning" role="alert"></div>');
 	alertObj.append(msg);
 	alertObj.append('<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>');
 	$('.container').prepend(alertObj);
